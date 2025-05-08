@@ -1,0 +1,137 @@
+﻿@model ecommerce.Models.Orders
+@{
+    ViewData["Title"] = "Checkout";
+
+}
+
+<!-- main wrapper start -->
+<main>
+    <!-- breadcrumb area start -->
+    <div class="breadcrumb-area common-bg">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="breadcrumb-wrap">
+                        <nav aria-label="breadcrumb">
+                            <h1>checkout</h1>
+                            <ul class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="/"><i class="fa fa-home"></i></a></li>
+                                <li class="breadcrumb-item"><a href="shop.html">shop</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">checkout</li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- breadcrumb area end -->
+    <!-- checkout main wrapper start -->
+    <div class="checkout-page-wrapper section-space">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <!-- Checkout Login Coupon Accordion Start -->
+                    <div class="checkoutaccordion" id="checkOutAccordion">
+                        <div class="card">
+                            <h3>
+                                Returning Customer? <span data-toggle="collapse" data-target="#logInaccordion">
+                                    Click
+                                    Here To Login
+                                </span>
+                            </h3>
+                            <div id="logInaccordion" class="collapse" data-parent="#checkOutAccordion">
+                                <div class="card-body">
+                                    <p>
+                                        If you have shopped with us before, please enter your details in the boxes
+                                        below. If you are a new customer, please proceed to the Billing &amp;
+                                        Shipping section.
+                                    </p>
+
+
+
+
+                                </div>
+                                <!-- Checkout Login Coupon Accordion End -->
+                            </div>
+                        </div>
+                        <div class="row">
+                            <!-- Checkout Billing Details -->
+                            <div class="col-lg-6">
+                                <div class="checkout-billing-details-wrap">
+                                    <h2>Billing Details</h2>
+                                    <div class="billing-form-wrap">
+                                        <form asp-action="Checkout" method="post">
+                                            <!-- First Name -->
+                                            <div class="single-input-item">
+                                                <label asp-for="FirstName" class="required">First Name</label>
+                                                <input type="text" asp-for="FirstName" placeholder="First Name" class="form-control" />
+                                                <span asp-validation-for="FirstName" class="text-danger"></span>
+                                            </div>
+
+                                            <!-- Last Name -->
+                                            <div class="single-input-item">
+                                                <label asp-for="LastName" class="required">Last Name</label>
+                                                <input type="text" asp-for="LastName" placeholder="Last Name" class="form-control" />
+                                                <span asp-validation-for="LastName" class="text-danger"></span>
+                                            </div>
+
+                                            <!-- Email -->
+                                            <div class="single-input-item">
+                                                <label asp-for="Email" class="required">Email Address</label>
+                                                <input type="email" asp-for="Email" placeholder="Email Address" class="form-control" />
+                                                <span asp-validation-for="Email" class="text-danger"></span>
+                                            </div>
+
+                                            <!-- Phone -->
+                                            <div class="single-input-item">
+                                                <label asp-for="Phone">Phone</label>
+                                                <input type="text" asp-for="Phone" placeholder="Phone" class="form-control" />
+                                                <span asp-validation-for="Phone" class="text-danger"></span>
+                                            </div>
+
+
+                                            <!-- Shipping Address -->
+                                            <div class="single-input-item">
+                                                <label asp-for="ShippingAddress" class="required">Street Address</label>
+                                                <input type="text" asp-for="ShippingAddress" placeholder="Street Address Line 1" class="form-control" />
+                                                <span asp-validation-for="ShippingAddress" class="text-danger"></span>
+                                            </div>
+
+                                            @*   <!-- Billing Address -->
+                                            <div class="single-input-item">
+                                            <label asp-for="BillingAddress">Billing Address</label>
+                                            <input type="text" asp-for="BillingAddress" placeholder="Billing Address (Optional)" class="form-control" />
+                                            <span asp-validation-for="BillingAddress" class="text-danger"></span>
+                                            </div> *@
+
+                                            <!-- Payment Method -->
+                                            <div class="single-input-item">
+                                                <label asp-for="PaymentMethod" class="required">Payment Method</label>
+                                                <select asp-for="PaymentMethod" class="form-control">
+
+                                                    <option value="Cash on Delivery">Cash on Delivery</option>
+                                                </select>
+                                                <span asp-validation-for="PaymentMethod" class="text-danger"></span>
+                                            </div>
+
+
+                                            <!-- Submit Button -->
+                                            <div class="single-input-item">
+                                                <button type="submit" class="btn-danger">Submit Checkout</button>
+                                            </div>
+                                        </form>
+
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                        </div>
+                    </div>
+                </div>
+                <!-- checkout main wrapper end -->
+</main>
+<!-- main wrapper end -->

@@ -1,0 +1,178 @@
+﻿@model List<CartViewModel>
+@{
+    ViewData["Title"] = "Cart";
+}
+
+<!-- main wrapper start -->
+<main>
+    <!-- breadcrumb area start -->
+    <div class="breadcrumb-area common-bg">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="breadcrumb-wrap">
+                        <nav aria-label="breadcrumb">
+                            <h1>cart</h1>
+                            <ul class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="/"><i class="fa fa-home"></i></a></li>
+                                <li class="breadcrumb-item"><a href="shop.html">shop</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">cart</li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- breadcrumb area end -->
+    <!-- cart main wrapper start -->
+    <div class="cart-main-wrapper section-space">
+        <div class="container">
+            <div class="section-bg-color">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <!-- Cart Table Area -->
+                        <div class="cart-table table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th class="pro-thumbnail">Thumbnail</th>
+                                        <th class="pro-title">Product</th>
+                                        <th class="pro-price">Price</th>
+                                        <th class="pro-quantity">Quantity</th>
+                                        <th class="pro-subtotal">Total</th>
+                                        <th class="pro-remove">Remove</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td class="pro-thumbnail">
+                                                <a href="#">
+                                                    <img class="img-fluid" src="@Url.Content("~/images/" + item.ImagePath)" alt="Product" />
+                                                </a>
+                                            </td>
+                                            <td class="pro-title"><a href="#">@item.Name</a></td>
+                                            <td class="pro-price"><span>@item.Price.ToString("C")</span></td>
+                                            <td class="pro-quantity">
+                                                <div>
+                                                    <button type="button" onclick="decreaseQuantity(@item.CartId)">-</button>
+                                                    <input id="quantity-@item.CartId" value="@item.Quantity" min="1" onchange="validateQuantity(@item.CartId, this.value)" />
+                                                    <button type="button" onclick="increaseQuantity(@item.CartId)">+</button>
+                                                </div>
+                                            </td>
+                                            <td class="pro-subtotal" id="total-amount-@item.CartId">
+                                                <span>@item.TotalPrice.ToString("C")</span>
+                                            </td>
+
+                                            <td class="pro-remove"><a href="#" onclick="removeFromCart(@item.CartId)"><i class="fa fa-trash-o"></i></a></td>
+
+
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- Cart Update Option -->
+                        <div class="cart-update-option d-block d-md-flex justify-content-between">
+                            <div>
+                                <form asp-controller="Home" asp-action="Checkout" method="get" class="d-block d-md-flex">
+                                    <button type="submit" class="btn btn__bg btn__sqr">Checkout</button>
+                                </form>
+                            </div>
+
+
+                          
+
+                            <button type="button" class="btn btn__bg" onclick="updateCart()">Update Cart</button>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- cart main wrapper end -->
+</main>
+
+@section Scripts {
+    <script>
+        var cartUpdates = [];
+
+         function increaseQuantity(cartId) {
+             var inputField = document.getElementById('quantity-' + cartId);
+             var newQuantity = parseInt(inputField.value) + 1;
+             inputField.value = newQuantity;
+             addToCartUpdates(cartId, newQuantity);
+         }
+
+         function decreaseQuantity(cartId) {
+             var inputField = document.getElementById('quantity-' + cartId);
+             var newQuantity = parseInt(inputField.value) - 1;
+             if (newQuantity >= 1) {
+                 inputField.value = newQuantity;
+                 addToCartUpdates(cartId, newQuantity);
+             }
+         }
+
+         function validateQuantity(cartId, value) {
+             var newQuantity = parseInt(value);
+             if (newQuantity >= 1) {
+                 addToCartUpdates(cartId, newQuantity);
+             } else {
+                 alert("Quantity must be at least 1.");
+                 document.getElementById('quantity-' + cartId).value = 1;
+             }
+         }
+
+         function addToCartUpdates(cartId, quantity) {
+             var existingItem = cartUpdates.find(item => item.cartId === cartId);
+             if (existingItem) {
+                 existingItem.quantity = quantity;
+             } else {
+                 cartUpdates.push({ cartId: cartId, quantity: quantity });
+             }
+         }
+
+         function updateCart() {
+             if (cartUpdates.length === 0) {
+                 alert("No updates to apply.");
+                 return;
+             }
+
+             $.ajax({
+                 url: '/Home/UpdateCartItems',
+                 type: 'POST',
+                 contentType: 'application/json',
+                 data: JSON.stringify(cartUpdates),
+                 success: function (response) {
+                     if (response.success) {
+                         alert("Cart updated successfully!");
+                         location.reload();
+                     } else {
+                         alert(response.message);
+                     }
+                 },
+                 error: function (xhr, status, error) {
+                     console.error("Error updating cart: " + error);
+                     alert("Failed to update cart. Please try again.");
+                 }
+             });
+         }
+
+        function removeFromCart(cartId) {
+            $.ajax({
+                url: '/Home/RemoveFromCart',
+                type: 'POST',
+                data: { cartId: cartId },
+                success: function (response) {
+                    if (response.success) {
+                        location.reload();
+                    }
+                }
+            });
+        }
+    </script>
+}

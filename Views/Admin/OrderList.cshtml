@@ -1,0 +1,136 @@
+﻿@model IEnumerable<ecommerce.Models.Orders>
+@{
+    ViewData["Title"] = "OrderList";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<div class="main-panel">
+    <div class="content">
+        <h4 class="card-title d-flex justify-content-between align-items-center">
+            <span>Orders List</span> <!-- Left aligned Employee List -->
+@*             <a asp-action="OrderList" class="btn btn-primary">Create New</a> <!-- Right aligned button -->
+ *@        </h4>
+      
+           
+
+
+
+                @if (TempData["update_success"] != null)
+                {
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <strong>Updated!</strong> @TempData["update_success"]
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                }
+                @if (TempData["delete_success"] != null)
+                {
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <strong>Deleted!</strong> @TempData["delete_success"]
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                }
+
+                <p style="color:green;">@TempData["Success"]</p>
+
+
+
+
+              
+                <table class="table table-bordered table-hover table-striped">
+                    <thead class="table-light">
+                        <tr>
+                            <th style="width: 10%;">@Html.DisplayNameFor(model => model.OrderId)</th>
+                            <th style="width: 20%;">@Html.DisplayNameFor(model => model.UserId)</th>
+                            <th style="width: 20%;">@Html.DisplayNameFor(model => model.FirstName)</th>
+                            <th style="width: 15%;">@Html.DisplayNameFor(model => model.LastName)</th>
+                            <th style="width: 15%;">@Html.DisplayNameFor(model => model.Email)</th>
+                            <th style="width: 10%;">@Html.DisplayNameFor(model => model.Phone)</th>
+                            <th style="width: 10%;">@Html.DisplayNameFor(model => model.OrderDate)</th>
+                            <th style="width: 10%;">@Html.DisplayNameFor(model => model.ShippingAddress)</th>
+                            <th style="width: 15%;">@Html.DisplayNameFor(model => model.Status)</th>
+                            <th style="width: 10%;">@Html.DisplayNameFor(model => model.PaymentMethod)</th>
+                            <th style="width: 10%;">@Html.DisplayNameFor(model => model.TotalAmount)</th>
+
+                            <th style="width: 10%;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@Html.DisplayFor(modelItem => item.OrderId)</td>
+                                <td>@Html.DisplayFor(modelItem => item.UserId)</td>
+                                <td>@Html.DisplayFor(modelItem => item.FirstName)</td>
+                                <td>@Html.DisplayFor(modelItem => item.LastName)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Email)</td>
+
+                             @* 
+                                 <td>
+                                    <img src="~/images/@item.ImagePath" style="width:100px;height:100px;" />
+                                 </td>
+                             *@
+                                <td>@Html.DisplayFor(modelItem => item.Phone)</td>
+                                <td>@Html.DisplayFor(modelItem => item.OrderDate)</td>
+                                <td>@Html.DisplayFor(modelItem => item.ShippingAddress)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Status)</td>
+                                <td>@Html.DisplayFor(modelItem => item.PaymentMethod)</td>
+                                <td>@Html.DisplayFor(modelItem => item.TotalAmount)</td>
+
+
+                        <td>
+                            @if (item.Status == "Delivered")
+                            {
+                                <button class="btn btn-success btn-sm" disabled>
+                                    <i class="fas fa-check-circle"></i> Delivered
+                                </button>
+                                <hr />
+                                <a asp-action="UpdateOrderStatus" asp-route-id="@item.OrderId" asp-route-status="Cancelled" class="btn btn-danger btn-sm">
+                                    <i class="fas fa-times-circle"></i> Cancelled
+                                </a>
+                            }
+                            else if (item.Status == "Cancelled")
+                            {
+                                <button class="btn btn-danger btn-sm" disabled>
+                                    <i class="fas fa-times-circle"></i> Cancelled
+                                </button>
+                            }
+                            else if (item.Status == "On the Way")
+                            {
+                                <button class="btn btn-warning btn-sm" disabled>
+                                    <i class="fas fa-truck"></i> On the Way
+                                </button>
+                                <hr />
+                                <a asp-action="UpdateOrderStatus" asp-route-id="@item.OrderId" asp-route-status="Delivered" class="btn btn-success btn-sm">
+                                    <i class="fas fa-check-circle"></i> Delivered
+                                </a>
+                            }
+                            else
+                            {
+                                <a asp-action="UpdateOrderStatus" asp-route-id="@item.OrderId" asp-route-status="On the Way" class="btn btn-warning btn-sm">
+                                    <i class="fas fa-truck"></i> On the Way
+                                </a>
+                                <hr />
+                                <a asp-action="UpdateOrderStatus" asp-route-id="@item.OrderId" asp-route-status="Delivered" class="btn btn-success btn-sm">
+                                    <i class="fas fa-check-circle"></i> Delivered
+                                </a>
+                                <hr />
+                                <a asp-action="UpdateOrderStatus" asp-route-id="@item.OrderId" asp-route-status="Cancelled" class="btn btn-danger btn-sm">
+                                    <i class="fas fa-times-circle"></i> Cancelled
+                                </a>
+                            }
+                        </td>
+
+
+
+
+
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+    </div>
+</div>
+
+
+

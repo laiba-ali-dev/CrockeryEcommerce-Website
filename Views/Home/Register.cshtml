@@ -1,0 +1,146 @@
+﻿@model ecommerce.Models.User
+@{
+    ViewData["Title"] = "Register";
+}
+
+<!-- main wrapper start -->
+<main>
+    <!-- breadcrumb area start -->
+    <div class="breadcrumb-area common-bg">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="breadcrumb-wrap">
+                        <nav aria-label="breadcrumb">
+                            <h1>Register</h1>
+                            <ul class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="/"><i class="fa fa-home"></i></a></li>
+                                <li class="breadcrumb-item active" aria-current="page">register</li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- breadcrumb area end -->
+    <!-- login register wrapper start -->
+    <div class="login-register-wrapper section-space">
+        <div class="container">
+            <div class="member-area-from-wrap">
+                <div class="row">
+                    <!-- Register Content Start -->
+                    <div class="col-lg-6">
+                        <div class="login-reg-form-wrap sign-up-form">
+                            <h2>Registration Form</h2>
+                            <form asp-action="Register">
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                <div class="single-input-item">
+                                    <label asp-for="Name "></label>
+                                    <input asp-for="Name" type="text" id="Name" placeholder="Full Name" required />
+                                    <span asp-validation-for="Name" style="color:red;" id="nameError" class="text-danger"></span>
+                                </div>
+                                <div class="single-input-item">
+                                    <label asp-for="Email "></label>
+                                    <input asp-for="Email" type="text" id="Email" placeholder="Enter Email" required />
+                                    <span asp-validation-for="Email" style="color:red;" id="emailError" class="text-danger"></span>
+                                </div>
+                                <div class="row">
+
+                                    <div class="col-lg-6">
+                                        <div class="single-input-item">
+                                            <label asp-for="PhoneNumber "></label>
+                                            <input asp-for="PhoneNumber" type="text" id="PhoneNumber" placeholder="Enter Phone Number" required />
+                                            <span asp-validation-for="PhoneNumber" style="color:red;" id="phoneError" class="text-danger"></span>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-6">
+                                        <div class="single-input-item">
+                                            <label asp-for="Password "></label>
+                                            <input asp-for="Password" type="password" id="Password" placeholder="Enter Password" required />
+                                            <span asp-validation-for="Password" style="color:red;" id="passwordError" class="text-danger"></span>
+
+                                        </div>
+                                    </div>
+                                </div>
+                              
+                                <div class="single-input-item">
+                                    <button class="btn btn__bg">Register</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <!-- Register Content End -->
+                </div>
+            </div>
+        </div>
+    </div>
+   
+</main>
+
+
+    <script>
+        $('#Name').on('blur', function () {
+            const name = $(this).val();
+            console.log("Name field value:", name); // For debugging
+            if (name.length < 2) {
+                $('#nameError').text("Name must be more than 2 characters.");
+            } else {
+                $('#nameError').text("");
+            }
+        });
+
+
+        $('#Email').on('blur', function () {
+            const email = $(this).val();
+            const emailPattern = /^[^\s@@]+@@[^\s@@]+\.[^\s@@]+$/;  // Simple email format regex
+
+            if (!emailPattern.test(email)) {
+                $('#emailError').text("Please enter a valid email format.");
+                return;
+            }
+
+            // Duplicate email check with AJAX
+            $.ajax({
+                url: '@Url.Action("CheckEmail")',  // Controller ke method ka URL
+                type: 'POST',
+                data: { email: email },
+                success: function (response) {
+                    if (!response.isValid) {
+                        $('#emailError').text("This email is already registered.");
+                    } else {
+                        $('#emailError').text("");
+                    }
+                }
+            });
+        });
+
+
+        // Password Validation (8 characters se ziada aur complex hona chahiye)
+        $('#Password').on('blur', function () {
+            const password = $(this).val();
+            if (password.length < 8) {
+                $('#passwordError').text("Password must be at least 8 characters long.");
+            } else {
+                $('#passwordError').text("");
+            }
+        });
+
+        // Phone Number Validation (Sirf 11 digits hona chahiye)
+        $('#PhoneNumber').on('blur', function () {
+            const phoneNumber = $(this).val();
+            const phonePattern = /^[0-9]{11}$/;
+            if (!phonePattern.test(phoneNumber)) {
+                $('#phoneError').text("Phone number must be exactly 11 digits.");
+            } else {
+                $('#phoneError').text("");
+            }
+        });
+    </script>
+}
+
+
+<!-- main wrapper end -->
+

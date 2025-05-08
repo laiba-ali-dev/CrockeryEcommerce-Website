@@ -1,0 +1,117 @@
+﻿
+@{
+    ViewData["Title"] = "ContactUs";
+}
+
+<!-- main wrapper start -->
+<main>
+    <!-- breadcrumb area start -->
+    <div class="breadcrumb-area common-bg">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="breadcrumb-wrap">
+                        <nav aria-label="breadcrumb">
+                            <h1>contact us</h1>
+                            <ul class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="/"><i class="fa fa-home"></i></a></li>
+                                <li class="breadcrumb-item active" aria-current="page">contact us</li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- breadcrumb area end -->
+    <!-- contact area start -->
+    <div class="contact-area section-space">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="contact-message">
+                        <h2>tell us your project</h2>
+
+
+
+
+
+                        <form asp-action="SendMessage" asp-controller="Home" method="post" class="contact-form">
+                            <div class="row">
+                                <div class="col-lg-6 col-md-6 col-sm-6">
+                                    <input name="first_name" placeholder="Name " type="text" required>
+                                </div>
+
+                                <div class="col-lg-6 col-md-6 col-sm-6">
+                                    <input name="email_address" placeholder="Email " type="email" required>
+                                </div>
+
+                                <div class="col-12">
+                                    <div class="contact2-textarea text-center">
+                                        <textarea placeholder="Message " name="message" class="form-control2" required></textarea>
+                                    </div>
+                                    <div class="contact-btn">
+                                        <button class="btn btn__bg" type="submit">Send Message</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
+                    @*     <div class="col-12 text-center mt-3">
+                            @if (ViewBag.Message != null)
+                            {
+                                <p class="alert alert-info">@ViewBag.Message</p>
+                            }
+                        </div> *@
+                      
+                        @if (ViewBag.Message != null)
+                        {
+                            <div id="success-message" class="alert alert-success" role="alert">
+                                @ViewBag.Message
+                            </div>
+                        }
+
+
+
+
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="contact-info">
+                        <h2>contact us</h2>
+                        <p>
+                            Claritas est etiam processus dynamicus, qui sequitur mutationem consuetudium lectorum. Mirum
+                            est notare quam littera gothica, quam nunc putamus parum claram anteposuerit litterarum
+                            formas human.
+                        </p>
+                        <ul>
+                            <li><i class="fa fa-fax"></i> Address : No 40 Baria Sreet 133/2 NewYork City</li>
+                            <li><i class="fa fa-phone"></i> info@yourdomain.com</li>
+                            <li><i class="fa fa-envelope-o"></i> +88013245657</li>
+                        </ul>
+                        <div class="working-time">
+                            <h3>Working hours</h3>
+                            <p><span>Monday – Saturday:</span>08AM – 22PM</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- contact area end -->
+</main>
+@section Scripts
+{
+    <script>
+        // Hide message after 5 seconds (5000 milliseconds)
+        setTimeout(function () {
+            var messageDiv = document.getElementById("success-message");
+            if (messageDiv) {
+                messageDiv.style.display = "none";
+            }
+        }, 5000);
+    </script>
+}
+
+<!-- main wrapper end -->
+

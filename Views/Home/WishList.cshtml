@@ -1,0 +1,143 @@
+﻿@model IEnumerable<dynamic>
+@{
+    ViewData["Title"] = "WishList";
+}
+
+<!-- main wrapper start -->
+<main>
+    <!-- breadcrumb area start -->
+    <div class="breadcrumb-area common-bg">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="breadcrumb-wrap">
+                        <nav aria-label="breadcrumb">
+                            <h1>Wishlist</h1>
+                            <ul class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="/"><i class="fa fa-home"></i></a></li>
+                                <li class="breadcrumb-item"><a href="shop.html">Shop</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Wishlist</li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- breadcrumb area end -->
+    <!-- wishlist main wrapper start -->
+
+
+    <div class="wishlist-main-wrapper section-space">
+        <div class="container">
+            <!-- Wishlist Page Content Start -->
+            <div class="section-bg-color">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <!-- Wishlist Table Area -->
+                        <div class="cart-table table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th class="pro-thumbnail">Thumbnail</th>
+                                        <th class="pro-title">Product</th>
+                                        <th class="pro-price">Price</th>
+                                        <th class="pro-description">Description</th>
+                                        <th class="pro-subtotal">Add to Cart</th>
+                                        <th class="pro-remove">Remove</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr id="wishlist-item-@item.WishlistId">
+                                            <td class="pro-thumbnail">
+                                                <a href="#">
+                                                    <img class="img-fluid" src="@Url.Content("~/images/" + item.ProductImage)" alt="Product" />
+                                                </a>
+                                            </td>
+                                            <td class="pro-title">
+                                                <a href="#">@item.ProductName</a>
+                                            </td>
+                                            <td class="pro-price">
+                                                <span>@item.ProductPrice</span>
+                                            </td>
+                                            <td class="pro-description">
+                                                @item.ProductDescription
+                                            </td>
+
+
+                                            <td class="pro-subtotal">
+                                                <button href="javascript:void(0);" class="btn btn-cart"
+                                                        onclick="addtocart(@item.ProductId, @item.WishlistId)"
+                                                        data-toggle="tooltip" data-placement="left" title="Add to cart">
+                                                    Add to cart
+                                                </button>
+                                            </td>
+                                            <td class="pro-remove">
+                                                <a href="javascript:void(0);" onclick="removeFromwishlist(@item.WishlistId)">
+                                                    <i class="fa fa-trash-o"></i>
+                                                </a>
+                                            </td>
+
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Wishlist Page Content End -->
+        </div>
+    </div>
+    <!-- wishlist main wrapper end -->
+    @section Scripts {
+
+
+
+        <script>
+            function addtocart(productId, wishlistId) {
+                $.ajax({
+                    url: '@Url.Action("AddToCart", "Home")',
+                    type: 'POST',
+                    data: { productId: productId },
+                    success: function (response) {
+                        if (response.success) {
+                            removeFromwishlist(wishlistId);
+                            alert('Item added to cart successfully!');
+                        } else {
+                            alert('Failed to add item to cart.');
+                        }
+                    },
+                    error: function () {
+                        alert('Failed to add item to cart.');
+                    }
+                });
+            }
+
+            function removeFromwishlist(wishlistId) {
+                $.ajax({
+                    url: '/Home/RemoveFromWishlist',
+                    type: 'POST',
+                    data: { WishlistId: wishlistId },
+                    success: function (response) {
+                        if (response.success) {
+                            // Table se row hata dein bina page reload kiye
+                            $('#wishlist-item-' + wishlistId).remove();
+                        } else {
+                            alert('Failed to remove item from wishlist.');
+                        }
+                    },
+                    error: function () {
+                        alert('An error occurred while removing the item.');
+                    }
+                });
+            }
+        </script>
+
+
+
+    }
+</main>
+<!-- main wrapper end -->

@@ -1,0 +1,77 @@
+﻿@model IEnumerable<ecommerce.Models.Products>
+@{
+    ViewData["Title"] = "ProductsIndex";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<div class="main-panel">
+    <div class="content">
+      
+
+                @if (TempData["update_success"] != null)
+                {
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <strong>Updated!</strong> @TempData["update_success"]
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                }
+                @if (TempData["delete_success"] != null)
+                {
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <strong>Deleted!</strong> @TempData["delete_success"]
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                }
+
+
+                <p style="color:green;">@TempData["Success"]</p>
+
+
+
+
+                <h4 class="card-title d-flex justify-content-between align-items-center">
+                    <span>Products List</span> <!-- Left aligned Employee List -->
+                    <a asp-action="AddProducts" class="btn btn-primary">Create New</a> <!-- Right aligned button -->
+                </h4>
+                <table class="table table-bordered table-hover table-striped">
+                    <thead class="table-light">
+                        <tr>
+                            <th style="width: 10%;">@Html.DisplayNameFor(model => model.ProductId)</th>
+                            <th style="width: 20%;">@Html.DisplayNameFor(model => model.Name)</th>
+                            <th style="width: 20%;">@Html.DisplayNameFor(model => model.Description)</th>
+                            <th style="width: 15%;">@Html.DisplayNameFor(model => model.Price)</th>
+                            <th style="width: 15%;">@Html.DisplayNameFor(model => model.Stock)</th>
+                            <th style="width: 10%;">@Html.DisplayNameFor(model => model.ImagePath)</th>
+                            <th style="width: 10%;">@Html.DisplayNameFor(model => model.Category)</th>
+                            <th style="width: 10%;">@Html.DisplayNameFor(model => model.CreateDate)</th>
+                            <th style="width: 10%;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@Html.DisplayFor(modelItem => item.ProductId)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Description)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Price)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Stock)</td>
+                                <td>
+                                    <img src="~/images/@item.ImagePath" style="width:100px;height:100px;" />
+                                </td>
+                                  <td>@Html.DisplayFor(modelItem => item.Category)</td>
+                                <td>@Html.DisplayFor(modelItem => item.CreateDate)</td>
+
+                                <td>
+                                    <a asp-action="EditProducts" asp-route-id="@item.ProductId" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i> Edit</a>
+                                    <hr />
+                                    <a asp-action="DeleteProducts" asp-route-id="@item.ProductId" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i> Delete</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+    </div>
+</div>
+

@@ -1,0 +1,80 @@
+﻿
+@{
+    ViewData["Title"] = "OrderConfirmation";
+    Layout = null;
+
+
+
+
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .confirmation-box {
+            text-align: center;
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+        }
+
+            .confirmation-box .icon {
+                font-size: 50px;
+                color: #4CAF50;
+                margin-bottom: 20px;
+            }
+
+            .confirmation-box h1 {
+                font-size: 24px;
+                color: #333333;
+                margin-bottom: 10px;
+            }
+
+            .confirmation-box p {
+                font-size: 16px;
+                color: #666666;
+                margin-bottom: 20px;
+            }
+
+            .confirmation-box a {
+                text-decoration: none;
+                background-color: #4CAF50;
+                color: #ffffff;
+                padding: 10px 20px;
+                border-radius: 5px;
+                font-size: 14px;
+                font-weight: bold;
+            }
+
+                .confirmation-box a:hover {
+                    background-color: #45a049;
+                }
+    </style>
+</head>
+<body>
+    <div class="confirmation-box">
+        <div class="icon">✔️</div>
+        <h1>Order Confirmed!</h1>
+        <p>Your order has been placed successfully. Thank you for shopping with us!</p>
+        <a href="/">Go to Homepage</a>
+    </div>
+</body>
+</html>
+

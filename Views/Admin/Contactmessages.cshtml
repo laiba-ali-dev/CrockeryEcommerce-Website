@@ -1,0 +1,57 @@
+﻿@model IEnumerable<ecommerce.Models.ContactMessages>
+@{
+    ViewData["Title"] = "Contactmessages";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<div class="main-panel">
+    <div class="content">
+
+
+        
+
+
+
+
+        <h4 class="card-title d-flex justify-content-between align-items-center">
+            <span>Contact Messages List</span> <!-- Left aligned Employee List -->
+        </h4>
+        <table class="table table-bordered table-hover table-striped">
+            <thead class="table-light">
+                <tr>
+                    <th style="width: 10%;">@Html.DisplayNameFor(model => model.MessageId)</th>
+                    <th style="width: 20%;">@Html.DisplayNameFor(model => model.UserId)</th>
+                    <th style="width: 20%;">@Html.DisplayNameFor(model => model.Name)</th>
+                    <th style="width: 15%;">@Html.DisplayNameFor(model => model.Email)</th>
+                    <th style="width: 15%;">@Html.DisplayNameFor(model => model.Message)</th>
+                    <th style="width: 10%;">@Html.DisplayNameFor(model => model.MessageDate)</th>
+                   
+@*                     <th style="width: 10%;">Actions</th>
+ *@                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => item.MessageId)</td>
+                        <td>@Html.DisplayFor(modelItem => item.UserId)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Email)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Message)</td>
+                       
+                        <td>@Html.DisplayFor(modelItem => item.MessageDate)</td>
+                       
+
+                     @*    <td>
+                            <a asp-action="EditProducts" asp-route-id="@item.ProductId" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i> Edit</a>
+                            <hr />
+                            <a asp-action="DeleteProducts" asp-route-id="@item.ProductId" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i> Delete</a>
+                        </td> *@
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+</div>
+

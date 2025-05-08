@@ -1,0 +1,78 @@
+﻿@model ecommerce.Models.User
+@{
+    ViewData["Title"] = "Login";
+}
+
+<!-- main wrapper start -->
+<main>
+    <!-- breadcrumb area start -->
+    <div class="breadcrumb-area common-bg">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="breadcrumb-wrap">
+                        <nav aria-label="breadcrumb">
+                            <h1>Login</h1>
+                            <ul class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="/"><i class="fa fa-home"></i></a></li>
+                                <li class="breadcrumb-item active" aria-current="page">login</li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- breadcrumb area end -->
+    <!-- login register wrapper start -->
+    <div class="login-register-wrapper section-space">
+        <div class="container">
+            <div class="member-area-from-wrap">
+                <div class="row">
+                    <!-- Login Content Start -->
+                     <div class="col-lg-6">
+                    <div class="login-reg-form-wrap">
+                    <h2>Login</h2>
+                    <form asp-action="Login">
+                                <div asp-validation-summary=" ModelOnly" class="text-danger"></div>
+                    <div class="single-input-item">
+                                    <label asp-for="Email "></label>
+                                    <input asp-for="Email" type="text" id="Email" placeholder="Enter Email" required />
+                                    <span asp-validation-for="Email" style="color:red;" id="emailError" class="text-danger"></span>
+                                </div>
+                    <div class="single-input-item">
+                                    <label asp-for="Password "></label>
+                                    <input asp-for="Password" type="password" id="Password" placeholder="Enter Password" required />
+                                    <span asp-validation-for="Password" style="color:red;" id="passwordError" class="text-danger"></span>
+                                </div>
+                    <div class="single-input-item">
+                    <div class="login-reg-form-meta d-flex align-items-center justify-content-between">
+                    <div class="remember-meta">
+                    <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="rememberMe">
+                    <label class="custom-control-label" for="rememberMe">Remember Me</label>
+                    </div>
+                    </div>
+                    <a href="#" class="forget-pwd">Forget Password?</a>
+                    </div>
+                    </div>
+                    <div class="single-input-item">
+                    <button class="btn btn__bg">Login</button>
+                    </div>
+                    </form>
+                    </div>
+                    </div>
+                  
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- login register wrapper end -->
+</main>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+<!-- main wrapper end -->
+

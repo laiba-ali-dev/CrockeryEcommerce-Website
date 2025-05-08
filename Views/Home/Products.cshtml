@@ -1,0 +1,282 @@
+﻿@model IEnumerable<ecommerce.Models.Products>
+
+@{
+    ViewData["Title"] = "Products";
+}
+<style>
+    /* Style for Alphabetical Search Box */
+    .alphabet-filter {
+        margin-bottom: 20px;
+    }
+
+        .alphabet-filter input {
+            padding: 8px;
+            font-size: 14px;
+            width: 200px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+
+    /* Style for Price Filter */
+    .filter-section {
+        margin-bottom: 20px;
+        display: flex;
+        gap: 10px;
+    }
+
+        .filter-section input,
+        .filter-section button {
+            padding: 8px;
+            font-size: 14px;
+        }
+</style>
+<section class="our-product section-space pt-0">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="section-title text-center">
+                    <h2>our Products</h2>
+                    <p>Accumsan vitae pede lacus ut ullamcorper sollicitudin quisque libero</p>
+                </div>
+            </div>
+        </div>
+
+      
+
+        <!-- Alphabetical filter using a search box -->
+        <div class="alphabet-filter">
+            <label for="alphabet-search">Search by Alphabet:</label>
+            <input type="text" id="alphabet-search" placeholder="Type a letter" oninput="filterByAlphabet()">
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <!-- Filtered products dynamically loaded here -->
+                <div id="filtered-products" class="product-carousel-wrapper">
+                    <!-- Dynamic filtered products will appear here -->
+                </div>
+
+                <!-- Existing product tab container -->
+                <div class="product-container">
+                   <div class="row">
+                   
+                                    @foreach (var item in Model)
+                                    {
+                            <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
+                                       
+                                        <div class="product-item">
+                                            <figure class="product-thumb">
+                                                <a href="product-details.html">
+                                                    <img class="pri-img" src="~/images/@item.ImagePath" alt="@item.Name">
+                                                    <img class="sec-img" src="~/images/@item.ImagePath" alt="@item.Name">
+                                                </a>
+                                                <div class="product-badge">
+                                                    <div class="product-label new">
+                                                        <span>new</span>
+                                                    </div>
+                                                    <div class="product-label discount">
+                                                        <span></span>
+                                                    </div>
+                                                </div>
+                                                <div class="button-group">
+                                                    <a href="javascript:void(0);" onclick="addToWishlist(@item.ProductId)" data-toggle="tooltip" data-placement="left" title="Add to wishlist">
+                                                        <i class="lnr lnr-heart"></i>
+                                                    </a>
+                                                    <a href="compare.html" data-toggle="tooltip" data-placement="left" title="Add to Compare"><i class="lnr lnr-sync"></i></a>
+                                                    <a href="#" data-toggle="modal" data-target="#quick_view"><span data-toggle="tooltip" data-placement="left" title="Quick View"><i class="lnr lnr-magnifier"></i></span></a>
+                                                </div>
+                                                <div class="box-cart">
+                                                    <button href="javascript:void(0);" class="btn btn-cart" onclick="addtocart(@item.ProductId)" data-toggle="tooltip" data-placement="left" title="Add to cart">
+                                                        Add to cart
+                                                    </button>
+                                                </div>
+                                            </figure>
+                                            <div class="product-caption">
+                                                <div class="product-identity">
+                                                    <p class="manufacturer-name"><a href="product-details.html">@item.Category</a></p>
+                                                    <div class="ratings">
+                                                        <span><i class="lnr lnr-star"></i></span>
+                                                        <span><i class="lnr lnr-star"></i></span>
+                                                        <span><i class="lnr lnr-star"></i></span>
+                                                        <span><i class="lnr lnr-star"></i></span>
+                                                        <span><i class="lnr lnr-star"></i></span>
+                                                    </div>
+                                                </div>
+                                                <p class="product-name">
+                                                    <a href="product-details.html">@item.Name</a>
+                                                </p>
+                                                <p class="product-name">@item.Description</p>
+                                                <div class="price-box">
+                                                    <span class="price-regular">@item.Price</span>
+                                                </div>
+                                                <p><strong>Stock:</strong> @item.Stock</p>
+                                                <p><strong>Date Added:</strong> @item.CreateDate</p>
+                                            </div>
+                                        </div>
+                            </div>
+                                    }
+
+
+
+                    </div>
+                   
+                </div>
+                <!-- End of product tab container -->
+            </div>
+        </div>
+    </div>
+
+    @section Scripts {
+
+        <script>
+            function filterProducts() {
+                const minPrice = parseFloat(document.getElementById('min-price').value) || 0;
+                const maxPrice = parseFloat(document.getElementById('max-price').value) || Number.MAX_VALUE;
+
+                $.ajax({
+                    url: '@Url.Action("GetFilteredProducts", "Home")',
+                    type: 'GET',
+                    data: { minPrice: minPrice, maxPrice: maxPrice },
+                    success: function (products) {
+                        let productHtml = '';
+                        products.forEach(product => {
+                            productHtml += `
+                                                    <div class="product-item">
+                                                        <figure class="product-thumb">
+                                                            <a href="product-details.html">
+                                                                <img class="pri-img" src="~/images/${product.imagePath}" alt="${product.name}">
+                                                            </a>
+                                                            <div class="product-caption">
+                                                                <p class="product-name">${product.name}</p>
+                                                                <div class="price-box">
+                                                                    <span class="price-regular">${product.price}</span>
+                                                                </div>
+                                                            </div>
+                                                        </figure>
+                                                    </div>`;
+                        });
+                        $('#filtered-products').html(productHtml);
+                    },
+                    error: function () {
+                        alert('Failed to filter products.');
+                    }
+                });
+            }
+        </script>
+
+
+
+        <script>
+            function addToWishlist(productId) {
+                $.ajax({
+                    url: '@Url.Action("AddToWishlist", "Home")',
+                    type: 'POST',
+                    data: { productId: productId },
+                    success: function (response) {
+                        if (response.success) {
+                            alert(response.message);
+                            // Fetch updated wishlist count
+                            $.ajax({
+                                url: '@Url.Action("GetWishlistCount", "Home")',
+                                type: 'GET',
+                                success: function (countResponse) {
+                                    if (countResponse && countResponse.count !== undefined) {
+                                        $('#wishlist-count').text(countResponse.count);
+                                    }
+                                },
+                                error: function () {
+                                    console.error('Failed to fetch wishlist count.');
+                                }
+                            });
+                        } else {
+                            alert(response.message);
+                        }
+                    },
+                    error: function () {
+                        alert('Failed to add to wishlist.');
+                    }
+                });
+            }
+        </script>
+
+
+
+        <script>
+            function addtocart(productId) {
+                $.ajax({
+                    url: '@Url.Action("AddToCart", "Home")',
+                    type: 'POST',
+                    data: { productId: productId },
+                    success: function (response) {
+
+
+                        if (response.success) {
+                            alert(response.message);
+                            // Fetch updated wishlist count
+                            $.ajax({
+                                url: '@Url.Action("GetCartCount", "Home")',
+                                type: 'GET',
+                                success: function (countResponse) {
+                                    if (countResponse && countResponse.count !== undefined) {
+                                        $('#cart-counter').text(countResponse.count);
+                                    }
+                                },
+                                error: function () {
+                                    console.error('Failed to fetch wishlist count.');
+                                }
+                            });
+                        } else {
+                            alert(response.message);
+                        }
+
+
+
+                    },
+                    error: function () {
+                        alert('Failed to add to cart.');
+                    }
+                });
+            }
+        </script>
+        <script>
+            // Function to filter products by price
+            function filterProducts() {
+                const minPrice = parseFloat(document.getElementById('min-price').value);
+                const maxPrice = parseFloat(document.getElementById('max-price').value);
+
+                const products = document.querySelectorAll('.product-item');
+                products.forEach(product => {
+                    const price = parseFloat(product.dataset.price);  // Assuming price is set in data-price attribute
+
+                    if ((isNaN(minPrice) || price >= minPrice) && (isNaN(maxPrice) || price <= maxPrice)) {
+                        product.closest('.col-lg-3').style.display = "block";
+                    } else {
+                        product.closest('.col-lg-3').style.display = "none";
+                    }
+                });
+            }
+
+            // Function to filter products by alphabet (search box)
+            function filterByAlphabet() {
+                const searchQuery = document.getElementById('alphabet-search').value.toUpperCase(); // Get the input value
+
+                const products = document.querySelectorAll(".product-item");
+
+                products.forEach(product => {
+                    const name = product.querySelector(".product-name").textContent.trim().toUpperCase();
+                    if (name.startsWith(searchQuery)) {
+                        product.closest('.col-lg-3').style.display = "block";
+                    } else {
+                        product.closest('.col-lg-3').style.display = "none";
+                    }
+                });
+            }
+        </script>
+
+
+
+    }
+</section>
+
+
+
+
